@@ -1,3 +1,4 @@
+<?php
 try {
 
 // Find out how many items are in the table
