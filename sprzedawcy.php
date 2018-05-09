@@ -1,30 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/simple-sidebar.css">
-    <link type="text/css" rel="stylesheet" href="css/simplePagination.css"/>
-</head>
-
+<?php include 'include\header.php' ?>
 <body>
-<div id="wrapper" class="toggled">
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand">OOO</li>
-            <li><a href="#">Dashboard</a></li>
-            <li>Sprzedajacy</li>
-            <li>Faktury</li>
-            <li>Towary</li>
-            <li>Kontakt</li>
-        </ul>
-    </div>
+<?php include 'include\sidenav.php'; ?>
 
     <div id="page-content-wrapper" class="container">
             <div class="row">
@@ -102,19 +78,11 @@
                     ?>
             </div>
         </div>
-    </div>
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="vendor/jquery/jquery.simplePagination.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Menu Toggle Script -->
-    <script>
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-    </script>
 
     <script type="text/javascript">
         $(document).ready(function(){
@@ -127,5 +95,5 @@
             });
         });
     </script>
-
+<?php include 'include\footer.php';?>
 </body>
