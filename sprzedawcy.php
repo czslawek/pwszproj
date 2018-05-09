@@ -10,6 +10,7 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/simple-sidebar.css">
+    <link type="text/css" rel="stylesheet" href="css/simplePagination.css"/>
 </head>
 
 <body>
@@ -26,10 +27,6 @@
     </div>
 
     <div id="page-content-wrapper" class="container">
-
-        <div class="container-fluid">
-            <button type="button" class="btn btn-secondary btn-sm" id="menu-toggle">Small button</button>
-
             <div class="row">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -52,53 +49,22 @@
 
                     try {
                         $conn = DB::connect();
-                        $sql = 'SELECT * FROM sczerpak.sprzedajacy';
-                        // Find out how many items are in the table
+
                         $total = $conn->query('SELECT COUNT(*) FROM sczerpak.sprzedajacy')->fetchColumn();
-
-                        // How many items to list per page
                         $limit = 20;
+                        $total_pages = (int) ceil($total / $limit);
 
-                        // How many pages will there be
-                        $pages = ceil($total / $limit);
+                        if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; };
+                        $offset = ($page-1) * $limit;
 
-                        // What page are we currently on?
-                        $page = min($pages, filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, array(
-                            'options' => array(
-                                'default' => 1,
-                                'min_range' => 1,
-                            ),
-                        )));
-
-                        // Calculate the offset for the query
-                        $offset = ($page - 1) * $limit;
-
-                        // Some information to display to the user
-                        $start = $offset + 1;
-                        $end = min(($offset + $limit), $total);
-
-                        // The "back" link
-                        $prevlink = ($page > 1) ? '<a href="?page=1" title="First page">&laquo;</a> <a href="?page=' . ($page - 1) . '" title="Previous page">&lsaquo;</a>' : '<span class="disabled">&laquo;</span> <span class="disabled">&lsaquo;</span>';
-
-                        // The "forward" link
-                        $nextlink = ($page < $pages) ? '<a href="?page=' . ($page + 1) . '" title="Next page">&rsaquo;</a> <a href="?page=' . $pages . '" title="Last page">&raquo;</a>' : '<span class="disabled">&rsaquo;</span> <span class="disabled">&raquo;</span>';
-
-                        // Prepare the paged query
                         $stmt = $conn->prepare('SELECT * FROM sczerpak.sprzedajacy ORDER BY id_sprzedajacy LIMIT :limit OFFSET :offset');
-
-                        // Bind the query params
                         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
                         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
                         $stmt->execute();
 
-
-                        //$query = $conn->query($sql);
-                        //$query->setFetchMode(PDO::FETCH_NUM);
                         if ($stmt->rowCount() > 0) {
-                            // Define how we want to fetch the results
                             $stmt->setFetchMode(PDO::FETCH_ASSOC);
                             $iterator = new IteratorIterator($stmt);
-
                             foreach ($iterator as $row) {
                                 echo '<tr>';
                                 echo '<td>' . $row['id_sprzedajacy'] . '</td>';
@@ -124,18 +90,22 @@
                     } catch (Exception $e) {
                         echo '<p>', $e->getMessage(), '</p>';
                     }
+                    echo '</tbody></table>';
 
-                    echo '</tbody>';
-                    echo '</table>';
+                    $pagLink = "<nav><ul class='pagination'>";
+
+                    for ($i=1; $i <= $total_pages; $i++) {
+                        $pagLink .= "<li><a href='sprzedawcy.php?page=".$i."'>".$i."</a></li>";
+                    };
+                    echo $pagLink . "</ul></nav>";
                     DB::disconnect();
-                    // Display the paging information
-                    echo '<div class="pagination"><p>', $prevlink, ' Page ', $page, ' / ', $pages, ' of ', $total, ' results ', $nextlink, ' </p></div>';
                     ?>
             </div>
         </div>
     </div>
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="vendor/jquery/jquery.simplePagination.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Menu Toggle Script -->
@@ -145,4 +115,17 @@
             $("#wrapper").toggleClass("toggled");
         });
     </script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.pagination').pagination({
+                items: <?php echo $total;?>,
+                itemsOnPage: <?php echo $limit;?>,
+                cssStyle: 'light-theme',
+                currentPage : <?php echo $page;?>,
+                hrefTextPrefix : 'sprzedawcy.php?page='
+            });
+        });
+    </script>
+
 </body>
