@@ -32,11 +32,19 @@
 }
 
 .footer {
+  clear: both;
   position: relative;
-  margin-top: -150px; /* negative value of footer height */
-  height: 150px;
-  clear:both;
-  padding-top:20px;
+  z-index: 10;
+  height: 95px;
+  margin-left: 160px;
+  font-size: 22px;
+  color: snow;
+  background-color: #121315;
+  padding-top: 20px;
+}
+
+.footer-link {
+  padding-left: 20px;
 }
 
 @media screen and (max-height: 450px) {

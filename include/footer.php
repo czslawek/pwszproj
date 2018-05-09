@@ -1,9 +1,9 @@
 
 <footer class="footer">
-    <div class="container">
-        <span class="text-muted">Link</span>
-        <span class="text-muted">Link</span>
-        <span class="text-muted">Link</span>
+    <div>
+        <span class="footer-link">Link</span>
+        <span class="footer-link">Link</span>
+        <span class="footer-link">Link</span>
 
     </div>
 </footer>
